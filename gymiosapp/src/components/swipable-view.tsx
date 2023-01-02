@@ -15,6 +15,7 @@ import Animated, {
 import { Box } from 'native-base'
 import { makeStyledComponent } from '../utils/styled'
 
+
 const StyledView = makeStyledComponent(Animated.View)
 
 interface Props extends Pick<PanGestureHandlerProps, 'simultaneousHandlers'> {

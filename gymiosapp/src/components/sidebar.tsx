@@ -13,8 +13,23 @@ import AnimatedColorBox from './animated-color-box'
 import ThemeToggle from './theme-toggle'
 import { Feather } from '@expo/vector-icons'
 import MenuButton from './menu-button'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { auth } from '../../firebase'
+import { useNavigation } from '@react-navigation/core'
+
 
 const Sidebar = (props: DrawerContentComponentProps) => {
+
+  const navigationSignOut = useNavigation()
+
+  const handleSignOut = () => {
+    auth
+      .signOut()
+      .then(() => {
+        navigationSignOut.replace("Login")
+      })
+      .catch(error => alert(error.message))
+  }
   const { state, navigation } = props
   const currentRoute = state.routeNames[state.index]
 
@@ -28,8 +43,9 @@ const Sidebar = (props: DrawerContentComponentProps) => {
     navigation.navigate('About')
   }, [navigation])
 
+  
+
   return (
-    
     <AnimatedColorBox
       safeArea
       flex={1}
@@ -76,12 +92,38 @@ const Sidebar = (props: DrawerContentComponentProps) => {
         >
           About
         </MenuButton>
-      </VStack>
-      <Center>
+        </VStack>
+      <View style={styles.container}>
+      <TouchableOpacity onPress={handleSignOut} style={styles.button}>
+        <Text style={styles.buttonText}>Sign out</Text>
+      </TouchableOpacity>
+    </View>
+    <Center>
         <ThemeToggle />
       </Center>
     </AnimatedColorBox>
   )
 }
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+   button: {
+    backgroundColor: '#0782F9',
+    width: '60%',
+    padding: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginTop: 200,
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: '700',
+    fontSize: 16,
+  },
+})
+
 
 export default Sidebar
